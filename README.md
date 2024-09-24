@@ -1,6 +1,6 @@
 # cloudwatch_logger
 
-[![Build Status](https://app.travis-ci.com/silviucpp/cloudwatch_logger.svg?branch=master)](https://travis-ci.com/github/silviucpp/cloudwatch_logger)
+[![Build Status](https://app.travis-ci.com/silviucpp/cloudwatch_logger.svg?branch=main)](https://travis-ci.com/github/silviucpp/cloudwatch_logger)
 [![GitHub](https://img.shields.io/github/license/silviucpp/cloudwatch_logger)](https://github.com/silviucpp/cloudwatch_logger/blob/master/LICENSE)
 
 OTP [logger][1] backend that sends log events to [Amazon CloudWatch][2].
