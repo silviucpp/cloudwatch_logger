@@ -11,7 +11,7 @@ encode(#{level := Level, meta := Meta} = Event, Hostname, {FormatterModule, Form
         {<<"timestamp">>, Ts},
         {<<"message">>, cloudwatch_utils:safe_json_encode([
             {<<"sv">>, severity2int(Level)},
-            {<<"host">>, Hostname},
+            {<<"host">>, maps:get(hostname, Meta, Hostname)},
             {<<"tags">>, cloudwatch_utils:to_binary(Module)},
             {<<"ts">>, Ts},
             {<<"msg">>, cloudwatch_utils:to_binary(FormatterModule:format(Event, FormatterConfig))}
