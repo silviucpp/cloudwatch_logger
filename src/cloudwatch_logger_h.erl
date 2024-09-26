@@ -125,11 +125,20 @@ do_push_messages(#state {
             erlang:cancel_timer(FlushTimerRef)
     end,
 
+    % Log events in a single PutLogEvents request must be in chronological order.
+    % By default logger will provide them in chronological order but we can use also cloudwatch_logger:log to push events
+    % from external sources like a kafka queue and those can have their own timestamps.
+    
+    SortedEvents = lists:sort(
+        fun({[{<<"timestamp">>, Ts1} | _]}, {[{<<"timestamp">>, Ts2} | _]}) ->
+            Ts1 =< Ts2
+        end, lists:map(fun(X) -> cloudwatch_encoder:encode(X, Hostname, Formatter) end, lists:reverse(Messages))),
+
     spawn_link(fun() ->
         cloudwatch_send_logs(cloudwatch_utils:safe_json_encode([
             {<<"logGroupName">>, CloudWatchGroupName},
             {<<"logStreamName">>, CloudWatchStreamName},
-            {<<"logEvents">>, lists:map(fun(X) -> cloudwatch_encoder:encode(X, Hostname, Formatter) end, lists:reverse(Messages))}
+            {<<"logEvents">>, SortedEvents}
         ]), RetryCount, RetryDelayMs)
     end),
 
