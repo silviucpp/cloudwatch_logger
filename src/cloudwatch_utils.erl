@@ -12,9 +12,9 @@ safe_json_encode(Msg) ->
         JsonPayloadList when is_list(JsonPayloadList) ->
             iolist_to_binary(JsonPayloadList);
         {error, _} ->
-            {value, {_, InnerMsg}, Msg1} = lists:keytake(<<"message">>, 1, Msg),
+            {value, {_, InnerMsg}, Msg1} = lists:keytake(<<"msg">>, 1, Msg),
             InnerMsg2 = iolist_to_binary(io_lib:format("hex msg. json encode failed: ~p", [binary:encode_hex(term_to_binary(InnerMsg))])),
-            safe_json_encode([{<<"message">>, InnerMsg2} | Msg1])
+            safe_json_encode([{<<"msg">>, InnerMsg2} | Msg1])
     end.
 
 to_binary(V) when is_binary(V) ->
